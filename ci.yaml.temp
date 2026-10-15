@@ -14,11 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Node.js
         # Not pinned on purpose: track current LTS. Latest known working major version: 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -33,11 +33,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Node.js
         # Not pinned on purpose: track current LTS. Latest known working major version: 24
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
           cache: 'npm'
@@ -64,8 +64,7 @@ jobs:
           tag_name: v${{ env.RELEASE_DATE }}
           name: git-buttons v${{ env.RELEASE_DATE }}
           files: '*.vsix'
-          overwrite: true
-          delete_old_artifacts: true
+          # v3: overwriting same-named assets on an existing release is the default (overwrite_files)
           make_latest: true
           fail_on_unmatched_files: true
 
