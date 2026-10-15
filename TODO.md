@@ -1,7 +1,6 @@
 # TODO
 
 ## Backlog
-- [feat/02_scaffold] Scaffold project with Yeoman generator (`yo code`) + TypeScript
 - [feat/03_npm] Set up NPM scripts: `compile`, `watch`, `package`, lint/format
 - [feat/04_fetch_button] Implement "GIT Fetch" button (status bar) running `git fetch --all`
 - [feat/05_prune_button] Implement "GIT Prune Local Branches" button deleting stale local branches
@@ -15,3 +14,4 @@
 - [chore/13_ci] GitHub Actions CI: build, test, package on push/PR
 
 ## Done
+- [feat/02_scaffold] Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
