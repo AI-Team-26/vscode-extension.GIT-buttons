@@ -64,7 +64,6 @@ jobs:
           tag_name: v${{ env.RELEASE_DATE }}
           name: git-buttons v${{ env.RELEASE_DATE }}
           files: '*.vsix'
-          # v3: overwriting same-named assets on an existing release is the default (overwrite_files)
           make_latest: true
           fail_on_unmatched_files: true
 
