@@ -1,4 +1,6 @@
-# GIT Buttons
+# GIT Buttons (VS Code extension)
+
+[![CI](https://github.com/AI-Team-26/vscode-extension.GIT-buttons/actions/workflows/ci.yaml/badge.svg)](https://github.com/AI-Team-26/vscode-extension.GIT-buttons/actions/workflows/ci.yaml)
 
 A VS Code extension that adds a command bar with quick Git actions right in your editor.
 
