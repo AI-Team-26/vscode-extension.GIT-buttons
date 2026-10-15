@@ -14,4 +14,4 @@
 
 ## Done
 - Feature 2: Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
-- Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Workflow added as `ci.yaml.temp` (repo root) — user must move it to `.github/workflows/ci.yml` to activate.
+- Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Workflow added as `ci.yaml` (repo root) — user must move it to `.github/workflows/ci.yml` to activate.

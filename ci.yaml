@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+# required to write releases
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,9 +17,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Node.js
+        # Not pinned on purpose: track current LTS. Latest known working major version: 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 'lts/*'
           cache: 'npm'
 
       - name: Install dependencies
@@ -31,9 +36,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Node.js
+        # Not pinned on purpose: track current LTS. Latest known working major version: 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 'lts/*'
           cache: 'npm'
 
       - name: Install dependencies
@@ -42,8 +48,25 @@ jobs:
       - name: Create VS Code extension package
         run: npm run package
 
-      - name: Upload vsix artifact
-        uses: actions/upload-artifact@v4
+      - name: Compute CalVer date
+        run: echo "RELEASE_DATE=$(date +%Y.%m.%d)" >> "$GITHUB_ENV"
+
+      # Same-day rebuilds update this release in place instead of creating a new one.
+      # Releases are only published from pushes to main; PRs verify packaging only.
+      - name: Publish GitHub Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v3
         with:
-          name: git-buttons-vsix
-          path: '*.vsix'
+          tag_name: v${{ env.RELEASE_DATE }}
+          name: git-buttons v${{ env.RELEASE_DATE }}
+          files: '*.vsix'
+          overwrite: true
+          delete_old_artifacts: true
+          make_latest: true
+          fail_on_unmatched_files: true
+
+      # Keep only the 3 newest releases so cumulative asset size stays bounded
+      # against the repository storage quota.
+      - name: Keep last 3 releases
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: gh release list --limit 4 | tail -n +2 | cut -f1 | xargs -rn1 gh release delete --cleanup-tag
