@@ -1,0 +1,37 @@
+{
+  "name": "git-buttons",
+  "displayName": "GIT Buttons",
+  "description": "Command bar with quick Git actions: fetch all remotes and prune stale local branches.",
+  "version": "0.0.1",
+  "publisher": "ai-team-26",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gitButtons.fetch",
+        "title": "GIT: Fetch"
+      },
+      {
+        "command": "gitButtons.pruneLocalBranches",
+        "title": "GIT: Prune Local Branches"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.1.0",
+    "typescript": "^5.5.0"
+  }
+}
