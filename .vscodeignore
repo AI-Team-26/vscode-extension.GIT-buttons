@@ -5,3 +5,5 @@ node_modules/**
 out/**/*.map
 tsconfig.json
 TODO.md
+eslint.config.mjs
+.prettierrc.json
