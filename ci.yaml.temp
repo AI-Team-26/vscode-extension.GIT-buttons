@@ -45,6 +45,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Fresh runner: out/ does not carry over from the build job
+      - name: Compile TypeScript
+        run: npm run compile
+
       - name: Create VS Code extension package
         run: npm run package
 
