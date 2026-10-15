@@ -1,7 +1,6 @@
 # TODO
 
 ## Backlog
-- Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Note: agent cannot push `.github/workflows` — create the file as `<workflow_name>.yaml.temp` so the user can push it themselves.
 - Feature 3: Set up NPM scripts: `compile`, `watch`, `package`, lint/format
 - Feature 4: Implement "GIT Fetch" button (status bar) running `git fetch --all`
 - Feature 5: Implement "GIT Prune Local Branches" button deleting stale local branches
@@ -15,3 +14,4 @@
 
 ## Done
 - Feature 2: Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
+- Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Workflow added as `ci.yaml` (repo root) — user must move it to `.github/workflows/ci.yml` to activate.
