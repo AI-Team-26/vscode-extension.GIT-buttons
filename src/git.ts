@@ -32,6 +32,25 @@ export async function findRepoRoot(folderPath: string): Promise<string | null> {
   }
 }
 
+export interface GitCommandResult {
+  success: boolean;
+  stdout?: string;
+  stderr?: string;
+}
+
+export async function runGitFetch(repoRoot: string): Promise<GitCommandResult> {
+  try {
+    const { stdout, stderr } = await execFileAsync("git", ["fetch", "--all"], {
+      cwd: repoRoot,
+      maxBuffer: 8 * 1024 * 1024
+    });
+    return { success: true, stdout, stderr };
+  } catch (err: unknown) {
+    const error = err as { message?: string; stderr?: string };
+    return { success: false, stderr: error.stderr ?? error.message };
+  }
+}
+
 export async function checkGitRepo(folderPath: string): Promise<GitCheckResult> {
   if (!(await isGitAvailable())) return { reason: "git-missing" };
 

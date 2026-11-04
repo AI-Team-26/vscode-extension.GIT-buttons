@@ -1,7 +1,6 @@
 # TODO
 
 ## Backlog
-- Feature 4: Implement "GIT Fetch" button (status bar) running `git fetch --all`
 - Feature 5: Implement "GIT Prune Local Branches" button deleting stale local branches
 - Feature 6: Expose both actions in the Command Palette
 - Feature 7: Show progress/status messages and result notifications for each action
@@ -11,6 +10,7 @@
 - Feature 12: Polish README with screenshots and usage instructions
 
 ## Done
+- Feature 4: Implement "GIT Fetch" button running `git fetch --all`
 - Bug 9: Graceful errors when not in a Git repo or git is missing
 - Feature 3: Set up NPM scripts: `compile`, `watch`, `package`, lint/format (verified end-to-end; project switched npm → pnpm)
 - Feature 2: Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
