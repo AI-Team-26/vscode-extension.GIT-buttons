@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { checkGitRepo, runGitFetch } from "./git";
+import { checkGitRepo, runGitFetch, runGitPruneLocalBranches } from "./git";
 import type { GitCheckFailReason } from "./git";
 
 function gitErrorMessage(reason: GitCheckFailReason, folderName: string): string {
@@ -49,8 +49,31 @@ async function runFetch(): Promise<void> {
   }
 }
 
-function runPruneLocalBranches(): void {
-  void vscode.window.showInformationMessage("GIT Buttons: prune local branches not implemented yet");
+async function runPruneLocalBranches(): Promise<void> {
+  const repoRoot = await ensureGitReady(vscode.workspace.workspaceFolders);
+  if (!repoRoot) return;
+
+  const status = vscode.window.setStatusBarMessage("$(trash) Pruning stale local branches…");
+  try {
+    const res = await runGitPruneLocalBranches(repoRoot);
+    if (!res.success) {
+      void vscode.window.showErrorMessage(`GIT Buttons: prune failed.\n${res.error ?? ""}`);
+      return;
+    }
+
+    if (res.deleted.length === 0 && res.skippedUnmerged.length === 0) {
+      void vscode.window.showInformationMessage("GIT Buttons: no stale local branches to prune.");
+      return;
+    }
+
+    let message = `GIT Buttons: pruned ${res.deleted.length} stale local branch(es): ${res.deleted.join(", ")}.`;
+    if (res.skippedUnmerged.length > 0) {
+      message += `\nSkipped (unmerged commits): ${res.skippedUnmerged.join(", ")}`;
+    }
+    void vscode.window.showInformationMessage(message);
+  } finally {
+    status.dispose();
+  }
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -59,9 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
       await runFetch();
     }),
     vscode.commands.registerCommand("gitButtons.pruneLocalBranches", async () => {
-      const repoRoot = await ensureGitReady(vscode.workspace.workspaceFolders);
-      if (!repoRoot) return;
-      runPruneLocalBranches();
+      await runPruneLocalBranches();
     })
   );
 }
