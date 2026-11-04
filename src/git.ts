@@ -38,17 +38,10 @@ export interface GitCommandResult {
   stderr?: string;
 }
 
-/**
- * Fetch updates from all configured remotes and prune stale remote-tracking branches.
- *
- * Possible variants:
- * - git fetch origin        – fetch only from the default remote
- * - git fetch --all         – fetch from every configured remote
- * - git fetch --all --prune – same as above but also removes tracking refs for branches deleted upstream
- */
+// Fetch updates from remote and prune stale remote-tracking branches.
 export async function runGitFetch(repoRoot: string): Promise<GitCommandResult> {
   try {
-    const { stdout, stderr } = await execFileAsync("git", ["fetch", "--all", "--prune"], {
+    const { stdout, stderr } = await execFileAsync("git", ["fetch", "origin", "--prune"], {
       cwd: repoRoot,
       maxBuffer: 8 * 1024 * 1024
     });
