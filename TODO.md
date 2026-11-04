@@ -6,12 +6,12 @@
 - Feature 6: Expose both actions in the Command Palette
 - Feature 7: Show progress/status messages and result notifications for each action
 - Feature 8: Handle multi-root workspaces (pick which repo to act on)
-- Bug 9: Graceful errors when not in a Git repo or git is missing
 - Feature 10: Add icons/labels to the command bar buttons
 - Feature 11: Add settings (e.g., prune confirmation, fetch flags)
 - Feature 12: Polish README with screenshots and usage instructions
 
 ## Done
+- Bug 9: Graceful errors when not in a Git repo or git is missing — added `src/git.ts` readiness checks (`isGitAvailable`, `findRepoRoot`, `checkWorkspace`) wired into both commands via an `ensureGitReady` guard that shows friendly error messages instead of failing cryptically.
 - Feature 3: Set up NPM scripts: `compile`, `watch`, `package`, lint/format (verified end-to-end; project switched npm → pnpm)
 - Feature 2: Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
 - Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Workflow added as `ci.yaml` (repo root) — user must move it to `.github/workflows/ci.yml` to activate.
