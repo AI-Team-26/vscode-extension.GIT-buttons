@@ -3,22 +3,13 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 
-/**
- * Why a workspace failed the readiness check.
- * - "ok": git is available and the folder is inside a Git repository.
- * - "git-missing": the git executable could not be spawned (not installed / not on PATH).
- * - "not-git-repo": git exists but the folder is not inside a Git repository.
- */
-export type GitCheckReason = "ok" | "git-missing" | "not-git-repo";
+export type GitCheckFailReason = "git-missing" | "not-git-repo";
 
 export interface GitCheckResult {
-  ok: boolean;
-  reason: GitCheckReason;
-  /** Absolute path of the repository root, present when `ok` is true. */
+  reason: GitCheckFailReason | null;
   repoRoot?: string;
 }
 
-/** Returns true when the `git` executable can be spawned successfully. */
 export async function isGitAvailable(): Promise<boolean> {
   try {
     await execFileAsync("git", ["--version"]);
@@ -28,7 +19,6 @@ export async function isGitAvailable(): Promise<boolean> {
   }
 }
 
-/** Resolves the top-level directory of the Git repository containing folderPath, or null. */
 export async function findRepoRoot(folderPath: string): Promise<string | null> {
   try {
     const { stdout } = await execFileAsync("git", ["rev-parse", "--show-toplevel"], {
@@ -42,12 +32,11 @@ export async function findRepoRoot(folderPath: string): Promise<string | null> {
   }
 }
 
-/** Checks whether git is available and folderPath belongs to a Git repository. */
 export async function checkGitRepo(folderPath: string): Promise<GitCheckResult> {
-  if (!(await isGitAvailable())) return { ok: false, reason: "git-missing" };
+  if (!(await isGitAvailable())) return { reason: "git-missing" };
 
   const repoRoot = await findRepoRoot(folderPath);
-  if (!repoRoot) return { ok: false, reason: "not-git-repo" };
+  if (!repoRoot) return { reason: "not-git-repo" };
 
-  return { ok: true, reason: "ok", repoRoot };
+  return { reason: null, repoRoot };
 }
