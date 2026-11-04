@@ -16,21 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Set up Node.js
         # Not pinned on purpose: track current LTS. Latest known working major version: 24
         uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Verify TypeScript compilation
-        run: pnpm run compile
+        run: npm run compile
 
   package:
     needs: build
@@ -38,25 +35,22 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Set up Node.js
         # Not pinned on purpose: track current LTS. Latest known working major version: 24
         uses: actions/setup-node@v5
         with:
           node-version: 'lts/*'
-          cache: 'pnpm'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       # Fresh runner: out/ does not carry over from the build job
       - name: Compile TypeScript
-        run: pnpm run compile
+        run: npm run compile
 
       - name: Create VS Code extension package
-        run: pnpm run package
+        run: npm run package
 
       - name: Compute CalVer date
         run: echo "RELEASE_DATE=$(date +%Y.%m.%d)" >> "$GITHUB_ENV"
