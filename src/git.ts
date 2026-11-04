@@ -38,6 +38,9 @@ export interface GitCommandResult {
   stderr?: string;
 }
 
+/**
+ * Fetch updates from all configured remotes into the local repository.
+ */
 export async function runGitFetch(repoRoot: string): Promise<GitCommandResult> {
   try {
     const { stdout, stderr } = await execFileAsync("git", ["fetch", "--all"], {
