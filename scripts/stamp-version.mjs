@@ -1,7 +1,6 @@
-// Temporarily sets package.json "version" to today's date (YY.M.D, e.g. 26.11.4)
+// Temporarily sets package.json "version" (YY.M.D, e.g. 26.11.4)
 // right before running vsce package, which reads that field to name the .vsix.
-// The original file is restored afterwards, so package.json never shows up as
-// modified in git.
+// The original file is restored afterwards, so package.json never shows up as modified in git.
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
