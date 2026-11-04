@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { checkGitRepo } from "./git";
+import { checkGitRepo, runGitFetch } from "./git";
 import type { GitCheckFailReason } from "./git";
 
 function gitErrorMessage(reason: GitCheckFailReason, folderName: string): string {
@@ -15,10 +15,10 @@ function gitErrorMessage(reason: GitCheckFailReason, folderName: string): string
   }
 }
 
-async function ensureGitReady(workspaceFolders: readonly vscode.WorkspaceFolder[] | undefined): Promise<boolean> {
+async function ensureGitReady(workspaceFolders: readonly vscode.WorkspaceFolder[] | undefined): Promise<string | null> {
   if (!workspaceFolders || workspaceFolders.length === 0) {
     void vscode.window.showErrorMessage("GIT Buttons: no folder is open in this window.");
-    return false;
+    return null;
   }
 
   const folder = workspaceFolders[0];
@@ -26,14 +26,27 @@ async function ensureGitReady(workspaceFolders: readonly vscode.WorkspaceFolder[
 
   if (result.reason !== null) {
     void vscode.window.showErrorMessage(gitErrorMessage(result.reason, folder.name));
-    return false;
+    return null;
   }
 
-  return true;
+  return result.repoRoot!;
 }
 
-function runFetch(): void {
-  void vscode.window.showInformationMessage("GIT Buttons: fetch not implemented yet");
+async function runFetch(): Promise<void> {
+  const repoRoot = await ensureGitReady(vscode.workspace.workspaceFolders);
+  if (!repoRoot) return;
+
+  const status = vscode.window.setStatusBarMessage("$(sync) Fetching…");
+  try {
+    const res = await runGitFetch(repoRoot);
+    if (res.success) {
+      void vscode.window.showInformationMessage("GIT Buttons: fetch completed successfully.");
+    } else {
+      void vscode.window.showErrorMessage(`GIT Buttons: fetch failed.\n${res.stderr ?? ""}`);
+    }
+  } finally {
+    status.dispose();
+  }
 }
 
 function runPruneLocalBranches(): void {
@@ -43,11 +56,11 @@ function runPruneLocalBranches(): void {
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("gitButtons.fetch", async () => {
-      if (!(await ensureGitReady(vscode.workspace.workspaceFolders))) return;
-      runFetch();
+      await runFetch();
     }),
     vscode.commands.registerCommand("gitButtons.pruneLocalBranches", async () => {
-      if (!(await ensureGitReady(vscode.workspace.workspaceFolders))) return;
+      const repoRoot = await ensureGitReady(vscode.workspace.workspaceFolders);
+      if (!repoRoot) return;
       runPruneLocalBranches();
     })
   );
