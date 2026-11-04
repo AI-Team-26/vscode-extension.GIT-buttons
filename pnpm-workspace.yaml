@@ -1,0 +1,4 @@
+# Approve native build scripts so `pnpm install` succeeds on clean CI runners
+allowBuilds:
+  "@vscode/vsce-sign": true
+  keytar: true
