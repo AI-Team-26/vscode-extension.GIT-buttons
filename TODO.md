@@ -11,7 +11,7 @@
 - Feature 12: Polish README with screenshots and usage instructions
 
 ## Done
-- Bug 9: Graceful errors when not in a Git repo or git is missing — added `src/git.ts` readiness checks (`isGitAvailable`, `findRepoRoot`, `checkWorkspace`) wired into both commands via an `ensureGitReady` guard that shows friendly error messages instead of failing cryptically.
+- Bug 9: Graceful errors when not in a Git repo or git is missing
 - Feature 3: Set up NPM scripts: `compile`, `watch`, `package`, lint/format (verified end-to-end; project switched npm → pnpm)
 - Feature 2: Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
 - Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Workflow added as `ci.yaml` (repo root) — user must move it to `.github/workflows/ci.yml` to activate.
