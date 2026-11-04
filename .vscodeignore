@@ -4,6 +4,7 @@ src/**
 node_modules/**
 out/**/*.map
 tsconfig.json
+pnpm-lock.yaml
 TODO.md
 eslint.config.mjs
 .prettierrc.json

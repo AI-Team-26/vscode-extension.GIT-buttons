@@ -1,7 +1,6 @@
 # TODO
 
 ## Backlog
-- Feature 3: Set up NPM scripts: `compile`, `watch`, `package`, lint/format
 - Feature 4: Implement "GIT Fetch" button (status bar) running `git fetch --all`
 - Feature 5: Implement "GIT Prune Local Branches" button deleting stale local branches
 - Feature 6: Expose both actions in the Command Palette
@@ -13,5 +12,6 @@
 - Feature 12: Polish README with screenshots and usage instructions
 
 ## Done
+- Feature 3: Set up NPM scripts: `compile`, `watch`, `package`, lint/format (verified end-to-end; project switched npm → pnpm)
 - Feature 2: Scaffold project: TypeScript extension skeleton, `package.json` manifest, build scripts
 - Feature 13: GitHub Actions CI: verify TypeScript compilation (`npm run compile`) and create the package (`vsce package`) on push/PR. Workflow added as `ci.yaml` (repo root) — user must move it to `.github/workflows/ci.yml` to activate.
