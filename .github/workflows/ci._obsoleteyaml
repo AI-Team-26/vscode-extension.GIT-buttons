@@ -1,5 +1,4 @@
-name: CI
-
+name: CI_obsolete
 on:
   push:
     branches: [main]
