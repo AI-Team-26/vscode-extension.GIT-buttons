@@ -1,6 +1,7 @@
-// Stamps package.json with a CalVer build date (YY.M.D, no zero padding) before
-// packaging, then restores the original file. This makes vsce name the artifact
-// e.g. git-buttons-26.11.4.vsix without committing version churn.
+// Temporarily sets package.json "version" to today's date (YY.M.D, e.g. 26.11.4)
+// right before running vsce package, which reads that field to name the .vsix.
+// The original file is restored afterwards, so package.json never shows up as
+// modified in git.
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
