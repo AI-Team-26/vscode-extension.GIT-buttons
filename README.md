@@ -2,7 +2,9 @@
 
 [![CI](https://github.com/AI-Team-26/vscode-extension.GIT-buttons/actions/workflows/ci.yaml/badge.svg)](https://github.com/AI-Team-26/vscode-extension.GIT-buttons/actions/workflows/ci.yaml)
 
-A VS Code extension that adds a command bar with quick Git actions right in your editor.
+A VS Code extension that adds a command bar with quick Git actions right in your editor.  
+  
+Inspiring repo: https://github.com/Snuffy2/shortcut-menu-bar-plus
 
 ## Features
 
