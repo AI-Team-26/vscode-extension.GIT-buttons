@@ -58,8 +58,11 @@ jobs:
       - name: Create VS Code extension package
         run: pnpm run package
 
+      # Same date format as scripts/stamp-version.mjs so the release tag matches
+      # the .vsix filename (e.g. v26.11.4). %y.%-m.%-d = year.month.day without
+      # leading zeros; %-m/%-d need GNU date, which ubuntu-latest has.
       - name: Compute CalVer date
-        run: echo "RELEASE_DATE=$(date +%Y.%m.%d)" >> "$GITHUB_ENV"
+        run: echo "RELEASE_DATE=$(date +%y.%-m.%-d)" >> "$GITHUB_ENV"
 
       # Same-day rebuilds update this release in place instead of creating a new one.
       # Releases are only published from pushes to main; PRs verify packaging only.
