@@ -1,5 +1,24 @@
 import * as vscode from "vscode";
 import { checkGitRepo } from "./git";
+import type { GitCheckReason } from "./git";
+
+// Maps every possible GitCheckReason to a user-facing message so the set of reasons stays explicit.
+// Adding a new reason without handling it below becomes a compile error (see the never guard).
+function gitErrorMessage(reason: GitCheckReason, folderName: string): string {
+  switch (reason) {
+    case "git-missing":
+      return "GIT Buttons: git could not be found. Install git or add it to your PATH.";
+    case "not-git-repo":
+      return `GIT Buttons: "${folderName}" is not inside a Git repository.`;
+    case "ok":
+      // Unreachable from the guard (called only on failure); kept so the switch covers every value.
+      return "GIT Buttons: unable to determine Git status.";
+    default: {
+      const exhaustive: never = reason;
+      throw new Error(`Unhandled Git check reason: ${exhaustive}`);
+    }
+  }
+}
 
 async function ensureGitReady(workspaceFolders: readonly vscode.WorkspaceFolder[] | undefined): Promise<boolean> {
   if (!workspaceFolders || workspaceFolders.length === 0) {
@@ -11,11 +30,7 @@ async function ensureGitReady(workspaceFolders: readonly vscode.WorkspaceFolder[
   const result = await checkGitRepo(folder.uri.fsPath);
 
   if (!result.ok) {
-    const message =
-      result.reason === "git-missing"
-        ? "GIT Buttons: git could not be found. Install git or add it to your PATH."
-        : `GIT Buttons: "${folder.name}" is not inside a Git repository.`;
-    void vscode.window.showErrorMessage(message);
+    void vscode.window.showErrorMessage(gitErrorMessage(result.reason, folder.name));
     return false;
   }
 
