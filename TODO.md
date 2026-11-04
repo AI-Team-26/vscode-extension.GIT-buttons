@@ -1,7 +1,6 @@
 # TODO
 
 ## Backlog
-- Feature 5: Implement "GIT Prune Local Branches" button deleting stale local branches
 - Feature 6: Expose both actions in the Command Palette
 - Feature 7: Show progress/status messages and result notifications for each action
 - Feature 8: Handle multi-root workspaces (pick which repo to act on)
@@ -10,6 +9,7 @@
 - Feature 12: Polish README with screenshots and usage instructions
   
 ## Done
+- Feature 5: Implement "GIT Prune Local Branches" button deleting stale local branches (branches whose upstream remote ref was pruned; safe `git branch -d`, never touches unpushed or unmerged work)
 - Bug 14: CalVer release naming — `pnpm run package` stamps build date (YY.M.D) so the artifact is e.g. `git-buttons-26.11.4.vsix`; CI release tag uses the same format
 - Feature 4: Implement "GIT Fetch" button running `git fetch --all`
 - Bug 9: Graceful errors when not in a Git repo or git is missing
